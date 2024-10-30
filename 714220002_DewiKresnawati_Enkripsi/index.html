@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Enkripsi dan Deskripsi Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #c3ecf7, #f3c4fb);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        h1 {
+            font-weight: 700;
+            color: #5a67d8;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            color: #444;
+            margin-top: 10px;
+        }
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            font-size: 14px;
+            color: #495057;
+            background-color: #f8f9fa;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        select:focus, input[type="text"]:focus, textarea:focus {
+            border-color: #5a67d8;
+        }
+        .submit-btn, .update-btn, .decrypt-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: white;
+            background-color: #5a67d8;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover, .update-btn:hover, .decrypt-btn:hover {
+            background-color: #434e9e;
+        }
+        .data-output {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #333;
+            text-align: left;
+            font-size: 14px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .data-output h3 {
+            color: #5a67d8;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th, td {
+            padding: 8px;
+        }
+        th {
+            background-color: #5a67d8;
+            color: white;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enkripsi dan Deskripsi Data</h1>
+
+        <label for="encryption-method">Metode Enkripsi</label>
+        <select id="encryption-method">
+            <option value="">Pilih Metode Enkripsi</option>
+            <option value="aes">AES</option>
+            <option value="rsa">RSA</option>
+            <option value="des">DES</option>
+            <option value="blowfish">Blowfish</option>
+        </select>
+
+        <label for="data-input">Masukkan Data</label>
+        <textarea id="data-input" placeholder="Masukkan data yang akan dienkripsi" rows="4"></textarea>
+
+        <button class="submit-btn" onclick="processData()">Proses Data</button>
+        <button class="update-btn" onclick="updateData()" style="display: none;">Perbarui Data</button>
+        <button class="decrypt-btn" onclick="decryptData()" style="display: none;">Deskripsi Data</button>
+
+        <div id="data-output" class="data-output" style="display: none;">
+            <h3>Informasi Data</h3>
+            <table>
+                <tr>
+                    <th>Data Asli</th>
+                    <th>Data Terenkripsi</th>
+                    <th>Data Dideskripsi</th>
+                </tr>
+                <tr>
+                    <td id="original-data"></td>
+                    <td id="encrypted-data"></td>
+                    <td id="decrypted-data"></td>
+                </tr>
+            </table>
+            <h3>Deskripsi Data</h3>
+            <p id="data-description">Data yang dienkripsi dan dideskripsi menunjukkan bagaimana informasi asli dapat dilindungi dan kemudian dikembalikan ke bentuk aslinya. Proses ini penting untuk menjaga keamanan data dalam penyimpanan dan transmisi.</p>
+        </div>
+    </div>
+
+    <script>
+        let currentEncryptedData = '';
+        let originalData = '';
+
+        function processData() {
+            const method = document.getElementById("encryption-method").value;
+            const data = document.getElementById("data-input").value;
+
+            if (!method || !data) {
+                alert("Silakan lengkapi semua field untuk memproses data.");
+                return;
+            }
+
+            // Simulasi enkripsi dan deskripsi sederhana
+            originalData = data; // Simpan data asli
+            currentEncryptedData = btoa(data); // enkripsi sederhana
+            const decryptedData = atob(currentEncryptedData); // deskripsi sederhana
+
+            document.getElementById("data-output").style.display = "block";
+            document.getElementById("original-data").innerText = originalData;
+            document.getElementById("encrypted-data").innerText = currentEncryptedData;
+            document.getElementById("decrypted-data").innerText = decryptedData;
+
+            document.querySelector('.update-btn').style.display = 'block'; // Menampilkan tombol perbarui
+            document.querySelector('.decrypt-btn').style.display = 'block'; // Menampilkan tombol deskripsi
+        }
+
+        function updateData() {
+            const newData = document.getElementById("data-input").value;
+
+            if (!newData) {
+                alert("Silakan masukkan data baru untuk memperbarui.");
+                return;
+            }
+
+            // Perbarui data dengan enkripsi baru
+            currentEncryptedData = btoa(newData); // enkripsi sederhana baru
+            originalData = newData; // Perbarui data asli
+
+            // Tampilkan hasil baru
+            document.getElementById("original-data").innerText = originalData;
+            document.getElementById("encrypted-data").innerText = currentEncryptedData;
+        }
+
+        function decryptData() {
+            // Mendapatkan data terenkripsi dan mendekode
+            const decryptedData = atob(currentEncryptedData);
+            document.getElementById("decrypted-data").innerText = decryptedData;
+        }
+    </script>
+</body>
+</html>
